@@ -1,4 +1,7 @@
 {
+  "name": "cgapi",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "build": "node dist/index.js",
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
