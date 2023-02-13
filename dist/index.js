@@ -15,13 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const utils_1 = require("./utils");
+const jwt = require("jsonwebtoken");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use(express_1.default.json());
 const users = [];
-app.get("/users", (req, res) => {
-    res.json(users);
+app.get("/users", utils_1.authenticateToken, (req, res) => {
+    const filteredUser = users.filter((user) => user.name === req.user.name);
+    res.json(filteredUser.map((user) => user.name));
 });
 app.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -34,15 +37,16 @@ app.post("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(500).send();
     }
 }));
-app.post("/users/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = users.find((user) => (user.name = req.body.name));
     if (user) {
         try {
             if (yield bcrypt_1.default.compare(req.body.password, user.password)) {
-                res.send("Success");
+                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+                res.json({ accessToken: accessToken });
             }
             else {
-                res.send("Not allowed");
+                res.json({ message: "unauthorized" });
             }
         }
         catch (_b) {
@@ -53,4 +57,10 @@ app.post("/users/login", (req, res) => __awaiter(void 0, void 0, void 0, functio
         return res.status(400).send("Cannot find user");
     }
 }));
+// app.post("/login", (req, res) => {
+//   const username = req.body.name
+//   const user = { name: username }
+//   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+//   res.json({ accessToken: accessToken })
+// })
 app.listen(port);
