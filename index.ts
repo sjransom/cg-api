@@ -3,7 +3,6 @@ import dotenv from "dotenv"
 import bcyrpt from "bcrypt"
 import { User } from "./types"
 import { authenticateToken, generateAccessToken } from "./utils"
-import { refreshTokens, users } from "./db"
 
 const jwt = require("jsonwebtoken")
 
@@ -13,6 +12,16 @@ const app: Express = express()
 const port = process.env.PORT
 
 app.use(express.json())
+
+// mock database
+export const users: User[] = [
+  {
+    username: "sjransom@gmail.com",
+    password: "$2b$10$avVInfNC/nqCu4G4anwFJu0.RLR3W8QOlNJtmAYGYg4cr30d5zIkm",
+  },
+]
+
+export let refreshTokens: string[] = []
 
 // login to app
 app.post("/login", async (req: Request, res: Response) => {
@@ -37,9 +46,17 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 })
 
+// logout
+app.delete("/logout", (req: Request, res: Response) => {
+  refreshTokens = refreshTokens.filter(
+    (token) => token !== req.body.refreshToken
+  )
+  res.sendStatus(204)
+})
+
 // get a new accessToken using refreshToken
 app.post("/token", (req: Request, res: Response) => {
-  const refreshToken: string = req.body.token
+  const refreshToken: string = req.body.refreshToken
   if (refreshToken == null) return res.sendStatus(401)
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
   jwt.verify(
