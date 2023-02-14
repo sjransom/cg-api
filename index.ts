@@ -16,7 +16,7 @@ app.use(express.json())
 
 // login to app
 app.post("/login", async (req: Request, res: Response) => {
-  const user = users.find((user: User) => (user.name = req.body.name))
+  const user = users.find((user: User) => (user.username = req.body.username))
   if (user) {
     try {
       if (await bcyrpt.compare(req.body.password, user.password)) {
@@ -48,7 +48,7 @@ app.post("/token", (req: Request, res: Response) => {
     (err: any, user: any) => {
       if (err) return res.sendStatus(403)
       const accessToken = generateAccessToken({
-        name: user.name,
+        username: user.username,
         password: user.password,
       })
       res.json({ accessToken: accessToken })
@@ -58,15 +58,17 @@ app.post("/token", (req: Request, res: Response) => {
 
 // get user
 app.get("/users", authenticateToken, (req: any, res: Response) => {
-  const filteredUser = users.filter((user) => user.name === req.user.name)
-  res.json(filteredUser.map((user) => user.name))
+  const filteredUser = users.filter(
+    (user) => user.username === req.user.username
+  )
+  res.json(filteredUser.map((user) => user.username))
 })
 
 // add new user
 app.post("/users", async (req: Request, res: Response) => {
   try {
     const hashedPassword = await bcyrpt.hash(req.body.password, 10)
-    const user = { name: req.body.name, password: hashedPassword }
+    const user = { username: req.body.username, password: hashedPassword }
     users.push(user)
     res.status(201).send(users)
   } catch {
