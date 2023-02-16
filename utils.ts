@@ -14,7 +14,8 @@ export const authenticateToken = (
   if (token == null) return res.sendStatus(401)
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: User) => {
-    if (err) return res.status(403)
+    console.log(err, "error")
+    if (err) return res.status(403).send("Access token has expired")
     req.user = user
     next()
   })
