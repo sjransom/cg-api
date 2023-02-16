@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from "express"
 import dotenv from "dotenv"
 import bcyrpt from "bcrypt"
+import { v4 as uuidv4 } from "uuid"
+
 import { User } from "./types"
 import { authenticateToken, generateAccessToken } from "./utils"
 
@@ -16,6 +18,7 @@ app.use(express.json())
 // mock database
 export const users: User[] = [
   {
+    id: "ce1a0e99-392a-4ad0-a935-4e1b7a902611",
     username: "sjransom@gmail.com",
     password: "$2b$10$avVInfNC/nqCu4G4anwFJu0.RLR3W8QOlNJtmAYGYg4cr30d5zIkm",
   },
@@ -36,7 +39,7 @@ app.post("/login", async (req: Request, res: Response) => {
         refreshTokens.push(refreshToken)
         res.json({ accessToken: accessToken, refreshToken: refreshToken })
       } else {
-        res.json({ message: "unauthorized" })
+        res.status(401).send()
       }
     } catch {
       res.status(500).send()
@@ -65,6 +68,7 @@ app.post("/token", (req: Request, res: Response) => {
     (err: any, user: any) => {
       if (err) return res.sendStatus(403)
       const accessToken = generateAccessToken({
+        id: user.id,
         username: user.username,
         password: user.password,
       })
@@ -85,7 +89,11 @@ app.get("/users", authenticateToken, (req: any, res: Response) => {
 app.post("/users", async (req: Request, res: Response) => {
   try {
     const hashedPassword = await bcyrpt.hash(req.body.password, 10)
-    const user = { username: req.body.username, password: hashedPassword }
+    const user = {
+      id: uuidv4(),
+      username: req.body.username,
+      password: hashedPassword,
+    }
     users.push(user)
     res.status(201).send(users)
   } catch {
