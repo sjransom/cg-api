@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express"
+import { Response, NextFunction } from "express"
 import { User } from "./types"
 
 const jwt = require("jsonwebtoken")
@@ -14,7 +14,6 @@ export const authenticateToken = (
   if (token == null) return res.sendStatus(401)
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: User) => {
-    console.log(err, "error")
     if (err) return res.status(403).send("Access token has expired")
     req.user = user
     next()
