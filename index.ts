@@ -18,9 +18,14 @@ app.use(express.json())
 // mock database
 export const users: User[] = [
   {
-    id: "ce1a0e99-392a-4ad0-a935-4e1b7a902611",
+    id: "42d00cd5-0bdf-4807-91f0-f679dc54dde7",
     username: "sjransom@gmail.com",
-    password: "$2b$10$avVInfNC/nqCu4G4anwFJu0.RLR3W8QOlNJtmAYGYg4cr30d5zIkm",
+    password: "$2b$10$pOMCpmXxwDjEjYOG2UJGNu7FZUPIdMycAppWY6osnjnJ1EuW2vHTa", // testing123
+  },
+  {
+    id: "d014eeef-1cf5-4873-abfd-abcfc56dfc48",
+    username: "adamb12@outlook.com",
+    password: "$2b$10$wINz1902rPDmHJPtLuKD1.gD2.aNyPf7m.yPOjwxdxT2TOCsWuMhu", // gorillas123
   },
 ]
 
@@ -28,7 +33,7 @@ export let refreshTokens: string[] = []
 
 // login to app
 app.post("/login", async (req: Request, res: Response) => {
-  const user = users.find((user: User) => (user.username = req.body.username))
+  const user = users.find((user: User) => user.username === req.body.username)
   if (user) {
     try {
       if (await bcyrpt.compare(req.body.password, user.password)) {
