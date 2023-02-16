@@ -15,8 +15,8 @@ const port = process.env.PORT
 
 app.use(express.json())
 
-// mock database
-export const users: User[] = [
+// mock db
+const users: User[] = [
   {
     id: "42d00cd5-0bdf-4807-91f0-f679dc54dde7",
     username: "sjransom@gmail.com",
@@ -28,8 +28,7 @@ export const users: User[] = [
     password: "$2b$10$wINz1902rPDmHJPtLuKD1.gD2.aNyPf7m.yPOjwxdxT2TOCsWuMhu", // gorillas123
   },
 ]
-
-export let refreshTokens: string[] = []
+let refreshTokens: string[] = []
 
 // login to app
 app.post("/login", async (req: Request, res: Response) => {
