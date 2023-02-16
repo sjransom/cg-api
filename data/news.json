@@ -1,0 +1,24 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "avatar": "url",
+      "name": "Adam Benhrima",
+      "createdDate": "",
+      "image": "url",
+      "heading": "Hello!",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "motm": "Adam Burns"
+    },
+    {
+      "id": "2",
+      "avatar": "url",
+      "name": "Oli Smith",
+      "createdDate": "",
+      "image": "url",
+      "heading": "Gorillas brilliant 3-0 victory over Northern Team!",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "motm": "Seb Bolanos"
+    }
+  ]
+}
