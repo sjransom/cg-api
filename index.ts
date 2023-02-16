@@ -79,9 +79,7 @@ app.post("/token", (req: Request, res: Response) => {
 
 // get user
 app.get("/users", authenticateToken, (req: any, res: Response) => {
-  const filteredUser = users.filter(
-    (user) => user.username === req.user.username
-  )
+  const filteredUser = users.filter((user) => user.id === req.user.id)
   res.json(filteredUser.map((user) => user.username))
 })
 
