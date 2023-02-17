@@ -34,9 +34,12 @@ let refreshTokens: string[] = []
 
 // login to app
 app.post("/login", async (req: Request, res: Response) => {
+  // find user from username
   const user = users.find((user: User) => user.username === req.body.username)
   if (user) {
     try {
+      // compare passwords
+      // if passwords match then user is logged in
       if (await bcyrpt.compare(req.body.password, user.password)) {
         const accessToken = generateAccessToken(user)
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
@@ -94,13 +97,16 @@ app.get("/users", authenticateToken, (req: any, res: Response) => {
 // add new user
 app.post("/users", async (req: Request, res: Response) => {
   try {
+    // create encrypted password with 10 salt rounds
     const hashedPassword = await bcyrpt.hash(req.body.password, 10)
+    // create user object
     const user = {
-      id: uuidv4(),
+      id: uuidv4(), // random ID
       name: req.body.name,
       username: req.body.username,
       password: hashedPassword,
     }
+    // push to user DB
     users.push(user)
     res.status(201).send(users)
   } catch {
