@@ -108,10 +108,10 @@ app.post("/users", async (req: Request, res: Response) => {
   }
 })
 
-app.listen(port)
-
 // newsfeed
-const json = require("../data/news.json")
 app.get("/newsfeed", authenticateToken, (req: Request, res: Response) => {
+  const json = require("../data/news.json")
   res.json(json)
 })
+
+app.listen(port)
