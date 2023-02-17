@@ -2,9 +2,9 @@
   "posts": [
     {
       "id": "1",
-      "avatar": "url",
+      "avatar": "https://i.imgur.com/w3RbE9Z.png",
       "name": "Adam Benhrima",
-      "createdDate": "",
+      "createdDate": "10th February 2023",
       "image": "url",
       "heading": "Hello!",
       "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -12,9 +12,9 @@
     },
     {
       "id": "2",
-      "avatar": "url",
-      "name": "Oli Smith",
-      "createdDate": "",
+      "avatar": "https://i.imgur.com/w3RbE9Z.png",
+      "name": "Oliver Smith",
+      "createdDate": "3rd February 2023",
       "image": "url",
       "heading": "Gorillas brilliant 3-0 victory over Northern Team!",
       "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
