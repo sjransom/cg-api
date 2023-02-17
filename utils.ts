@@ -22,6 +22,6 @@ export const authenticateToken = (
 
 export const generateAccessToken = (user: User) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
+    //expiresIn: "15s",
   })
 }

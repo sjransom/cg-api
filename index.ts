@@ -19,11 +19,13 @@ app.use(express.json())
 const users: User[] = [
   {
     id: "42d00cd5-0bdf-4807-91f0-f679dc54dde7",
+    name: "Sam",
     username: "sjransom@gmail.com",
     password: "$2b$10$pOMCpmXxwDjEjYOG2UJGNu7FZUPIdMycAppWY6osnjnJ1EuW2vHTa", // testing123
   },
   {
     id: "d014eeef-1cf5-4873-abfd-abcfc56dfc48",
+    name: "Adam",
     username: "adamb12@outlook.com",
     password: "$2b$10$wINz1902rPDmHJPtLuKD1.gD2.aNyPf7m.yPOjwxdxT2TOCsWuMhu", // gorillas123
   },
@@ -69,10 +71,11 @@ app.post("/token", (req: Request, res: Response) => {
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
-    (err: any, user: any) => {
+    (err: any, user: User) => {
       if (err) return res.sendStatus(403)
       const accessToken = generateAccessToken({
         id: user.id,
+        name: user.name,
         username: user.username,
         password: user.password,
       })
@@ -84,7 +87,8 @@ app.post("/token", (req: Request, res: Response) => {
 // get user
 app.get("/users", authenticateToken, (req: any, res: Response) => {
   const filteredUser = users.filter((user) => user.id === req.user.id)
-  res.json(filteredUser.map((user) => user.username))
+  const { id, name, username } = filteredUser[0]
+  res.json({ id: id, name: name, username: username })
 })
 
 // add new user
@@ -93,6 +97,7 @@ app.post("/users", async (req: Request, res: Response) => {
     const hashedPassword = await bcyrpt.hash(req.body.password, 10)
     const user = {
       id: uuidv4(),
+      name: req.body.name,
       username: req.body.username,
       password: hashedPassword,
     }
